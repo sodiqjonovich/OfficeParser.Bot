@@ -31,7 +31,7 @@ namespace OfficeParser.Bot.Services.Parsers
             UseOffice u = new UseOffice();
 
             int ret = u.InitExcel();
-
+             
             if (ret == 1)
                 _logger.Handle("MS Excel library Error!");
 
