@@ -13,16 +13,14 @@ namespace OfficeParser.Bot.Controllers
     public class HomeController : Controller
     {
         private readonly IDocumentManager _documentManager;
-        private readonly ICleaner _cleaner;
         private TelegramBotClient _client;
         private readonly ICommandManager _commandManager;
 
         public HomeController(IDocumentManager manager, 
-            ICleaner cleaner, TelegramBotClient client,
+            TelegramBotClient client,
             ICommandManager commanManager)
         {
             this._documentManager = manager;
-            this._cleaner = cleaner;
             this._client = client;
             this._commandManager = commanManager;
         }
@@ -51,7 +49,6 @@ namespace OfficeParser.Bot.Controllers
 
             await _documentManager.SendDocumentAsync(e.CallbackQuery.Message.Chat.Id, path);
             
-            _cleaner.Clear();
         }
 
         [Obsolete]
@@ -62,6 +59,8 @@ namespace OfficeParser.Bot.Controllers
 
             else if (e.Message.Type.Equals(Telegram.Bot.Types.Enums.MessageType.Document))
                 await _commandManager.GetDocumentInfoAsync(e);
+
+            else await _commandManager.NotTruthRequest(e);
         }
     }
 }

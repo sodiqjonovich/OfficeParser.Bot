@@ -11,5 +11,7 @@ namespace OfficeParser.Bot.Services.Commands
         [System.Obsolete]
         public Task GetDocumentInfoAsync(MessageEventArgs e);
 
+        [System.Obsolete]
+        public Task NotTruthRequest(MessageEventArgs e);
     }
 }

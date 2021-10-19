@@ -1,8 +1,6 @@
 ﻿using OfficeParser.Bot.Logger;
 using SautinSoft;
-using SautinSoft.Document;
 using System;
-using System.IO;
 using System.Threading.Tasks;
 
 namespace OfficeParser.Bot.Services.Parsers

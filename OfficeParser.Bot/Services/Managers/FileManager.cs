@@ -1,49 +1,88 @@
 ﻿using OfficeParser.Bot.Logger;
 using System;
+using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 
 namespace OfficeParser.Bot.Services.Managers
 {
     public class FileManager : IFileManager
     {
-        private readonly ILogger _logger;
+        private static string baseDocumentFilePath = 
+            AppDomain.CurrentDomain.BaseDirectory + "Documents";
 
-        private string docxFilePath = "D://5.docx";
-        private string excelFilePath = "D://5.xlsx";
-        private string pdfFilePath = "D://5.pdf";
-        public FileManager(ILogger logger)
+        public FileManager()
         {
-            this._logger = logger;
+            CreateFolder(baseDocumentFilePath);
+        }
+
+        public bool CreateFolder(string folderPath)
+        {
+            try
+            {
+                if (!Directory.Exists(folderPath))
+                    Directory.CreateDirectory(folderPath);
+                return true;
+            }
+            catch { 
+                return false;
+            }
+        }
+
+        public bool CheckFolder(string folderPath)
+        {
+            DirectoryInfo directoryInfo = new DirectoryInfo(folderPath);
+            return directoryInfo.Exists;
+        }
+
+        public bool CreateFile(string filePath)
+        {
+            try
+            {
+                File.Open(filePath, FileMode.Create, FileAccess.ReadWrite);
+                return true;
+            }
+            catch { 
+                return false;
+            }
+        }
+
+        public bool CheckFile(string filePath)
+        {
+            FileInfo fi = new FileInfo(filePath);
+            return fi.Exists;
+        }
+
+        public void WriteToFile(string filePath, 
+            List<string> text)
+        {
+            try
+            {
+                File.WriteAllLines(filePath, text);
+            }
+            catch{}
         }
 
         public string CreateFileDocx()
         {
-            try
-            {
-                File.Open(docxFilePath, FileMode.Create, FileAccess.ReadWrite);
-            }
-            catch (Exception error)
-            {
-                _logger.Handle("Word file yaratishda muammo bor",error);
-            }
+            if (!CheckFolder(baseDocumentFilePath)) CreateFolder(baseDocumentFilePath);
+            var docxFilePath = baseDocumentFilePath + "/document.docx";
+            CreateFile(docxFilePath);
             return docxFilePath;
         }
 
         public string CreateFileXls()
         {
-            try
-            {
-                File.Open(excelFilePath, FileMode.Create, FileAccess.ReadWrite);
-            }
-            catch (Exception error)
-            {
-                _logger.Handle("Excel file yaratishda muammo bor", error);
-            }
+            if (!CheckFolder(baseDocumentFilePath)) CreateFolder(baseDocumentFilePath);
+            string excelFilePath = baseDocumentFilePath + "/document.xlsx";
+            CreateFile(excelFilePath);
             return excelFilePath;
         }
 
         public string CreateFilePdf()
         {
+            if (!CheckFolder(baseDocumentFilePath)) CreateFolder(baseDocumentFilePath);
+            string pdfFilePath = baseDocumentFilePath + "/document.pdf";
             return pdfFilePath;
         }
     }

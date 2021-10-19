@@ -97,6 +97,8 @@ namespace OfficeParser.Bot.Services.Managers
                     caption: "✅ Muvaffaqqiyatli \n @officeParser_bot",
                     disableNotification: true);
             }
+
+            _cleaner.Clear();
         }
         private string GenerateFileName(string path)
         {

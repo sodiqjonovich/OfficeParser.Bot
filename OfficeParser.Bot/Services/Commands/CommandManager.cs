@@ -106,11 +106,24 @@ namespace OfficeParser.Bot.Services.Commands
                     == OfficeDocument.None)
             {
                 await _client.SendTextMessageAsync(chatId: userId,
-                       "Kechirasiz bunday file bilan Bot ishlay olmaydi", 
+                       "Kechirasiz bunday file bilan Bot ishlay olmaydi !" +
+                       "Ushbu turlardan foydalanishingiz mumkin : " +
+                       "PDF (.pdf) , WORD (.doc, .docx ) , Excel (.xls, xlsx)", 
                        replyToMessageId: msgId);
                 return false;
             }
             else return true;
+        }
+
+        [Obsolete]
+        public async Task NotTruthRequest(MessageEventArgs e)
+        {
+            long userId = e.Message.Chat.Id;
+            int msgId = e.Message.MessageId;
+            await _client.SendTextMessageAsync(userId,
+                "O'zgartirilishi kerak bo'lgan faylni yuboring. " +
+                "Masalan : Pdf, word, excell kabi turdagi fayllarni " +
+                "yuborishingiz mumkin", replyToMessageId: msgId);
         }
     }
 }
